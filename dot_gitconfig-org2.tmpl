@@ -1,0 +1,11 @@
+[user]
+    email = {{ .identities.org2.email }}
+    # Public key inline; the private half lives in the password manager and op-ssh-sign signs with it.
+    signingkey = {{ .identities.org2.key }}
+[core]
+    # The .pub only tells the agent WHICH key to offer (you may have several accounts on the same host).
+    sshCommand = {{ template "ssh-cmd" . }} -i {{ template "pubdir" . }}/id_org2.pub -o IdentitiesOnly=yes
+[gpg]
+    format = ssh
+[commit]
+    gpgsign = true

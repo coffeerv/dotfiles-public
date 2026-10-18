@@ -1,0 +1,11 @@
+# Layered on top of ~/.gitconfig-org1 for org1's Bitbucket repos: same email, different key.
+[core]
+    sshCommand = {{ template "ssh-cmd" . }} -i {{ template "pubdir" . }}/id_org1_bb.pub -o IdentitiesOnly=yes
+
+# Optional: clone URLs copied from the web UI are HTTPS; rewrite them to SSH transparently
+# so the key above is used without editing every remote.
+[url "git@bitbucket.org:"]
+    insteadOf = https://bitbucket.org/
+
+[user]
+    signingkey = {{ .identities.org1_bb.key }}

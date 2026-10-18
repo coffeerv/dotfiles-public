@@ -1,0 +1,16 @@
+# Global fnox config (per machine). The age key (~/.config/fnox/age.txt) belongs to THIS machine and is never committed.
+# Source of truth: the password manager (provider "op"). Prompt-free local cache: "cache" (age), filled by `secrets-sync`.
+if_missing = "warn"
+
+[providers.op]
+type = "1password"
+
+# Using Bitwarden instead? Swap the provider above for this one and rewrite each
+# secret's `value` as "Item" (password) or "Item/Field" instead of "op://Vault/Item/field".
+# Unlock first with `export BW_SESSION="$(bw unlock --raw)"`. See https://fnox.jdx.dev/providers/bitwarden
+# [providers.bw]
+# type = "bitwarden"
+
+[providers.cache]
+type = "age"
+recipients = [{{ output "age-keygen" "-y" (joinPath .chezmoi.homeDir ".config" "fnox" "age.txt") | trim | quote }}]

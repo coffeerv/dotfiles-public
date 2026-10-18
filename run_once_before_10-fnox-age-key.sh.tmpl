@@ -1,0 +1,12 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/bin/sh
+# Creates this machine's age key (once). Never committed: each machine has its own
+# and fills its own cache with `secrets-sync`.
+set -e
+k="$HOME/.config/fnox/age.txt"
+[ -f "$k" ] && exit 0
+command -v age-keygen >/dev/null || { echo "age-keygen missing: mise use -g age" >&2; exit 1; }
+mkdir -p "$(dirname "$k")"; chmod 700 "$(dirname "$k")"
+(umask 077; age-keygen -o "$k" 2>/dev/null)
+echo "fnox: age key created at $k — run 'secrets-sync' to fill the cache"
+{{- end }}

@@ -1,0 +1,5 @@
+# Defense in depth: none of these belong in the source repo.
+fnox.local.toml
+age.txt
+.gh/
+*.bak-*

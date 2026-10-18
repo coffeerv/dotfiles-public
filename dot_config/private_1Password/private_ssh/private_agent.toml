@@ -1,0 +1,11 @@
+# 1Password SSH agent: which vaults' keys are offered. Each identity's .pub file
+# (see ~/.gitconfig-<id>) picks the exact key, so offering several vaults is safe.
+# Docs: https://developer.1password.com/docs/ssh/agent/config
+[[ssh-keys]]
+vault = "Personal"
+
+[[ssh-keys]]
+vault = "Org1"
+
+[[ssh-keys]]
+vault = "Org2"

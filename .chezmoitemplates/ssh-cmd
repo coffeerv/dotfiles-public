@@ -1,0 +1,1 @@
+{{- if eq .chezmoi.os "windows" -}}C:/Windows/System32/OpenSSH/ssh.exe{{- else if .wsl -}}ssh.exe{{- else -}}ssh{{- end -}}

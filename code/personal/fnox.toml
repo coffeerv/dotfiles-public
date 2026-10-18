@@ -1,0 +1,4 @@
+# Personal secrets. References to the password manager only: no values here.
+# Read: fnox get NAME · refresh the local cache after rotating: secrets-sync personal
+[secrets]
+ANTHROPIC_API_KEY = { provider = "op", value = "op://Personal/Anthropic/api-key" }

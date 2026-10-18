@@ -1,0 +1,28 @@
+# Minimal on purpose: only what the multi-identity setup needs. Bring your own prompt/framework.
+
+eval "$({{ .chezmoi.homeDir }}/.local/bin/mise activate zsh)"
+
+# Make sure the password manager CLI can be used (fnox reads through it when syncing).
+secrets_unlock() {
+  # 1Password with the desktop-app integration: `op whoami` always fails; listing vaults triggers Touch ID.
+  op vault list &>/dev/null || { print -u2 "1Password: not authorized (is the app locked?)"; return 1; }
+  # Bitwarden instead:
+  # [[ -n $BW_SESSION ]] || export BW_SESSION="$(bw unlock --raw)" || return 1
+}
+
+# Per-identity secrets via fnox: source = password manager, read from a local age cache (fnox.local.toml), no prompts.
+# After rotating something in the password manager: `secrets-sync <name>` (or no argument for all).
+typeset -A SECRETS_DIRS=(
+  personal ~/code/personal
+  org1     ~/code/org1
+  org2     ~/code/org2
+)
+secrets-sync() {
+  secrets_unlock || return 1
+  local name dir
+  for name in ${@:-${(k)SECRETS_DIRS}}; do
+    dir=${SECRETS_DIRS[$name]}
+    [[ -n $dir && -f $dir/fnox.toml ]] || { print -u2 "secrets-sync: unknown name or no fnox.toml: $name"; continue; }
+    (cd $dir && fnox sync -p cache --local-file --force && chmod 600 fnox.local.toml) && print "$name: synced"
+  done
+}

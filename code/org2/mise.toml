@@ -1,0 +1,12 @@
+[env]
+# org2 is worked on from your personal GitHub account: share its gh config.
+GH_CONFIG_DIR         = "{{env.HOME}}/.config/gh-personal"
+LINEAR_API_KEY        = "{{ exec(command=env.HOME ~ '/.local/share/mise/installs/fnox/latest/fnox get LINEAR_API_KEY') }}"
+SENTRY_AUTH_TOKEN     = "{{ exec(command=env.HOME ~ '/.local/share/mise/installs/fnox/latest/fnox get SENTRY_AUTH_TOKEN') }}"
+STRIPE_RESTRICTED_KEY = "{{ exec(command=env.HOME ~ '/.local/share/mise/installs/fnox/latest/fnox get STRIPE_RESTRICTED_KEY') }}"
+EXPO_TOKEN            = "{{ exec(command=env.HOME ~ '/.local/share/mise/installs/fnox/latest/fnox get EXPO_TOKEN') }}"
+# Without this, a gcloud command without --project hits whatever your global default is.
+CLOUDSDK_CORE_PROJECT = "org2-project"
+
+[tools]
+"npm:eas-cli" = "latest"  # pin an exact version in real use

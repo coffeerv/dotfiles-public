@@ -1,0 +1,11 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Windows: creates this machine's age key (once). Never committed.
+$ErrorActionPreference = "Stop"
+$k = Join-Path $HOME ".config/fnox/age.txt"
+if (Test-Path $k) { exit 0 }
+if (-not (Get-Command age-keygen -ErrorAction SilentlyContinue)) { Write-Error "age-keygen missing: mise use -g age"; exit 1 }
+New-Item -ItemType Directory -Force -Path (Split-Path $k) | Out-Null
+age-keygen -o $k 2>$null
+icacls $k /inheritance:r /grant:r "$($env:USERNAME):(R,W)" | Out-Null
+Write-Host "fnox: age key created at $k - run 'fnox sync -p cache --local-file' in each identity directory"
+{{- end }}

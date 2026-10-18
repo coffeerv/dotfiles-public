@@ -1,0 +1,6 @@
+{{- $wsl := and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{- $winUser := "" -}}
+{{- if $wsl -}}{{- $winUser = promptStringOnce . "windowsUser" "Windows user (the folder under C:/Users/)" -}}{{- end -}}
+[data]
+    wsl = {{ $wsl }}
+    windowsUser = {{ $winUser | quote }}

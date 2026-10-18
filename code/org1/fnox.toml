@@ -1,0 +1,14 @@
+# org1 secrets. References to the password manager only: no values here.
+# Read: fnox get NAME · refresh the local cache after rotating: secrets-sync org1
+[secrets]
+BITBUCKET_TOKEN  = { provider = "op", value = "op://Org1/Atlassian/bitbucket-token" }
+JIRA_TOKEN       = { provider = "op", value = "op://Org1/Atlassian/jira-token" }
+DD_API_KEY       = { provider = "op", value = "op://Org1/Datadog/api-key" }
+DD_APP_KEY       = { provider = "op", value = "op://Org1/Datadog/app-key" }
+# Claude Code on the org's subscription (token from `claude setup-token`).
+CLAUDE_CODE_OAUTH_TOKEN = { provider = "op", value = "op://Org1/Claude/oauth-token" }
+# Only via `fnox get`; never exported to the environment by fnox itself.
+RO_DB_PASSWORD      = { provider = "op", value = "op://Org1/Read-only DB/password", env = false }
+OAUTH_CLIENT_ID     = { provider = "op", value = "op://Org1/OAuth app/client-id", env = false }
+OAUTH_CLIENT_SECRET = { provider = "op", value = "op://Org1/OAuth app/client-secret", env = false }
+OAUTH_REFRESH_TOKEN = { provider = "op", value = "op://Org1/OAuth app/refresh-token", env = false }

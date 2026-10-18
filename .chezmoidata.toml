@@ -1,0 +1,23 @@
+# Your identities. Everything here is public: names, emails and PUBLIC keys only.
+# The private keys live in your password manager and never touch disk.
+#
+# Each identity gets ~/.gitconfig-<id>, ~/.ssh/id_<id>.pub and a line in ~/.ssh/allowed_signers.
+# The key is used both to authenticate git over SSH and to sign commits.
+name = "Your Name"
+
+[identities.personal]
+email = "you@personal.example"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_PERSONAL_PUBLIC_KEY"
+
+[identities.org1]
+email = "you@org1.example"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG1_GITHUB_PUBLIC_KEY"
+
+# Same person, same org, different host: org1 also uses Bitbucket with its own key.
+[identities.org1_bb]
+email = "you@org1.example"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG1_BITBUCKET_PUBLIC_KEY"
+
+[identities.org2]
+email = "you@org2.example"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG2_PUBLIC_KEY"

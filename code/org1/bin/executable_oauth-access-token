@@ -1,0 +1,43 @@
+#!/bin/bash
+# Prints a valid OAuth access token (they live ~1 h) and refreshes it only when needed.
+# Meant for mise.toml: the fast path reads a cache file + its expiry, no network.
+# Client credentials and refresh token come from fnox (no prompts).
+set -u
+
+FNOX="$HOME/.local/share/mise/installs/fnox/latest/fnox"   # the binary, not the shim: the shim re-evaluates mise.toml and recurses
+ORG_DIR="$(cd "$(dirname "$0")/.." && pwd)"                 # fnox finds fnox.toml + fnox.local.toml (the cache) by directory
+TOKEN_URL=${OAUTH_TOKEN_URL:?set OAUTH_TOKEN_URL}
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/$(basename "$ORG_DIR")"
+TOKEN_FILE="$CACHE_DIR/oauth-access"
+EXP_FILE="$CACHE_DIR/oauth-access.exp"
+MARGIN=300   # refresh 5 min before expiry
+
+secret() { (cd "$ORG_DIR" && "$FNOX" get "$1" </dev/null 2>/dev/null); }
+
+now=$(date +%s)
+exp=$(cat "$EXP_FILE" 2>/dev/null || echo 0)
+current=$(cat "$TOKEN_FILE" 2>/dev/null)
+
+if [ -n "$current" ] && [ "$now" -lt $((exp - MARGIN)) ]; then
+  printf '%s' "$current"
+  exit 0
+fi
+
+# Refresh. Short timeout: this runs when you cd into the directory and must not hang the shell.
+resp=$(curl -sS --max-time 5 -X POST "$TOKEN_URL" \
+  --data-urlencode grant_type=refresh_token \
+  --data-urlencode "refresh_token=$(secret OAUTH_REFRESH_TOKEN)" \
+  --data-urlencode "client_id=$(secret OAUTH_CLIENT_ID)" \
+  --data-urlencode "client_secret=$(secret OAUTH_CLIENT_SECRET)" 2>/dev/null)
+
+token=$(printf '%s' "$resp" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("access_token",""))' 2>/dev/null)
+ttl=$(printf '%s' "$resp" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("expires_in",3600))' 2>/dev/null)
+
+if [ -n "$token" ]; then
+  (umask 077; mkdir -p "$CACHE_DIR"; printf '%s' "$token" > "$TOKEN_FILE"; echo $((now + ${ttl:-3600})) > "$EXP_FILE")
+  printf '%s' "$token"
+else
+  # No network or invalid refresh: return the old token so the environment still loads; the 401 will tell.
+  echo "oauth-access-token: refresh failed ($(printf '%s' "$resp" | head -c 120))" >&2
+  printf '%s' "$current"
+fi

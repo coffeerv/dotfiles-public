@@ -1,0 +1,9 @@
+README.md
+README.es.md
+{{- if eq .chezmoi.os "windows" }}
+.zshrc
+.config/1Password
+code/org1/bin/oauth-access-token
+{{- else }}
+AppData
+{{- end }}

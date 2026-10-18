@@ -1,0 +1,54 @@
+# Paths and binaries that change per OS (op-ssh-sign, ssh, gh).
+[include]
+    path = ~/.gitconfig.os
+
+[user]
+    name = {{ .name }}
+    # No global email: if none of the rules below match, git refuses to commit
+    # instead of silently using the wrong identity.
+    useConfigOnly = true
+
+# Verify SSH signatures for every identity (git log --show-signature).
+[gpg "ssh"]
+    allowedSignersFile = ~/.ssh/allowed_signers
+
+# Each identity is selected twice:
+#   - by directory, for fresh repos that have no remote yet, and
+#   - by remote URL (git >= 2.36), so it also applies to worktrees, /tmp clones, etc.
+# Later matches override earlier ones.
+
+# --- org1 (GitHub) -----------------------------------------------------------
+[includeIf "{{ template "gitdir" . }}:~/code/org1/"]
+    path = ~/.gitconfig-org1
+[includeIf "hasconfig:remote.*.url:git@github.com:org1/**"]
+    path = ~/.gitconfig-org1
+[includeIf "hasconfig:remote.*.url:https://*github.com/org1/**"]
+    path = ~/.gitconfig-org1
+
+# --- org1 (Bitbucket): base identity + Bitbucket override, in that order ----
+[includeIf "{{ template "gitdir" . }}:~/code/org1/bitbucket/"]
+    path = ~/.gitconfig-org1-bb
+[includeIf "hasconfig:remote.*.url:git@bitbucket.org:org1/**"]
+    path = ~/.gitconfig-org1
+[includeIf "hasconfig:remote.*.url:git@bitbucket.org:org1/**"]
+    path = ~/.gitconfig-org1-bb
+[includeIf "hasconfig:remote.*.url:https://*bitbucket.org/org1/**"]
+    path = ~/.gitconfig-org1
+[includeIf "hasconfig:remote.*.url:https://*bitbucket.org/org1/**"]
+    path = ~/.gitconfig-org1-bb
+
+# --- org2 --------------------------------------------------------------------
+[includeIf "{{ template "gitdir" . }}:~/code/org2/"]
+    path = ~/.gitconfig-org2
+[includeIf "hasconfig:remote.*.url:git@github.com:org2/**"]
+    path = ~/.gitconfig-org2
+[includeIf "hasconfig:remote.*.url:https://*github.com/org2/**"]
+    path = ~/.gitconfig-org2
+
+# --- personal ----------------------------------------------------------------
+[includeIf "{{ template "gitdir" . }}:~/code/personal/"]
+    path = ~/.gitconfig-personal
+[includeIf "hasconfig:remote.*.url:git@github.com:your-user/**"]
+    path = ~/.gitconfig-personal
+[includeIf "hasconfig:remote.*.url:https://*github.com/your-user/**"]
+    path = ~/.gitconfig-personal

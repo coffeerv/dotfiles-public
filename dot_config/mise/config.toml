@@ -1,0 +1,6 @@
+# Global tools. The first four are what this setup needs; add your own below.
+[tools]
+chezmoi = "latest"
+fnox = "latest"
+age = "latest"
+github-cli = "latest"
