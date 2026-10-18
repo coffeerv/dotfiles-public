@@ -99,3 +99,7 @@ Two parts **are** tied to 1Password and would need their own replacement: the **
 ## Never in this repo
 
 `~/.config/fnox/age.txt`, `fnox.local.toml`, private SSH keys, `.gh/`, `*.bak-*`.
+
+## License
+
+[MIT](LICENSE)

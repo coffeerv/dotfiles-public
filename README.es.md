@@ -101,3 +101,7 @@ Dos partes **sí** dependen de 1Password y necesitarían su propio reemplazo: el
 ## Nunca en este repo
 
 `~/.config/fnox/age.txt`, `fnox.local.toml`, llaves SSH privadas, `.gh/`, `*.bak-*`.
+
+## Licencia
+
+[MIT](LICENSE)
