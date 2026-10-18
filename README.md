@@ -206,6 +206,10 @@ Status: CI renders the configuration and checks identity resolution on macOS, Li
 - **Commit signing:** a signature on each commit proving you made it. GitHub shows it as "Verified".
 - **chezmoi / mise / fnox:** see [Under the hood](#under-the-hood).
 
+## Support
+
+This is an example to copy and adapt, provided as-is. Issues and pull requests are welcome but may not get a response.
+
 ## License
 
 [MIT](LICENSE)

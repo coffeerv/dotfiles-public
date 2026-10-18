@@ -208,6 +208,10 @@ Estado: CI genera la configuración y verifica qué identidad aplica en macOS, L
 - **Firma de commits:** una firma en cada commit que demuestra que lo hiciste tú. GitHub la muestra como "Verified".
 - **chezmoi / mise / fnox:** ver [Por dentro](#por-dentro).
 
+## Soporte
+
+Esto es un ejemplo para copiar y adaptar, tal cual (as-is). Los issues y pull requests son bienvenidos, pero puede que no reciban respuesta.
+
 ## Licencia
 
 [MIT](LICENSE)
