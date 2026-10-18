@@ -1,0 +1,2 @@
+# LF everywhere, including Windows checkouts: the templates render configs (and the wizard compares stubs) byte for byte.
+* text=auto eol=lf

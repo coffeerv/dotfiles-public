@@ -291,7 +291,7 @@ function syncStubs(d: Data) {
   let added = 0, removed = 0;
   for (const [rel, content] of want) {
     const p = join(REPO, rel);
-    if (existsSync(p) && readFileSync(p, "utf8") === content) continue;
+    if (existsSync(p) && readFileSync(p, "utf8").replace(/\r\n/g, "\n") === content) continue; // CRLF checkouts on Windows count as equal
     mkdirSync(dirname(p), { recursive: true });
     writeFileSync(p, content);
     added++;
