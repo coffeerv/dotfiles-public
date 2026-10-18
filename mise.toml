@@ -1,0 +1,8 @@
+# Only for running the setup wizard from this repo: `mise run setup`. Not copied to your home folder.
+[tools]
+bun = "1.4"
+gum = "2.0"
+
+[tasks.setup]
+description = "Interactive setup: identities, SSH keys, secrets; then chezmoi apply"
+run = "bun setup/wizard.ts"

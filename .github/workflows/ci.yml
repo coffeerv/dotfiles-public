@@ -1,0 +1,42 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  render:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+        with:
+          install_args: bun gum
+      - name: Tools
+        run: mise use -g chezmoi age fnox
+      - name: This machine's age key (the fnox config template reads it)
+        run: mkdir -p ~/.config/fnox && mise exec -- age-keygen -o ~/.config/fnox/age.txt
+      - name: Stub files match user.toml
+        run: |
+          mise exec -- bun setup/wizard.ts --sync --no-apply
+          git status --porcelain
+          test -z "$(git status --porcelain)"
+      - name: chezmoi config
+        run: mise exec -- chezmoi init --source "$PWD"
+      - name: Identities resolve per folder and remote
+        run: mise exec -- bash tests/identities.sh
+      - name: PowerShell profile parses
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $out = New-TemporaryFile
+          mise exec -- chezmoi execute-template --source . -f Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl | Set-Content $out
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile($out, [ref]$null, [ref]$errors) | Out-Null
+          if ($errors) { $errors; exit 1 }

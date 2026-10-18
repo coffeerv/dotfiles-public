@@ -1,0 +1,63 @@
+# Catalog of services the setup wizard offers. An identity lists the ones it uses in `services`.
+# Each var becomes one secret in that identity's fnox.toml, read from `item` / `field`
+# in the identity's vault. `env` holds non-secret settings that go to mise.toml.
+
+[services.linear]
+label = "Linear"
+item = "Linear"
+[[services.linear.vars]]
+name = "LINEAR_API_KEY"
+field = "api-key"
+
+[services.jira]
+label = "Jira"
+item = "Jira"
+[[services.jira.vars]]
+name = "JIRA_API_TOKEN"
+field = "api-token"
+
+[services.bitbucket]
+label = "Bitbucket API"
+item = "Bitbucket"
+[[services.bitbucket.vars]]
+name = "BITBUCKET_TOKEN"
+field = "api-token"
+
+[services.sentry]
+label = "Sentry"
+item = "Sentry"
+[[services.sentry.vars]]
+name = "SENTRY_AUTH_TOKEN"
+field = "auth-token"
+
+[services.stripe]
+label = "Stripe (use a restricted key)"
+item = "Stripe"
+[[services.stripe.vars]]
+name = "STRIPE_API_KEY"
+field = "restricted-key"
+
+[services.datadog]
+label = "Datadog"
+item = "Datadog"
+env = { DD_SITE = "datadoghq.com" }
+[[services.datadog.vars]]
+name = "DD_API_KEY"
+field = "api-key"
+[[services.datadog.vars]]
+name = "DD_APP_KEY"
+field = "app-key"
+
+[services.expo]
+label = "Expo / EAS"
+item = "Expo"
+[[services.expo.vars]]
+name = "EXPO_TOKEN"
+field = "token"
+
+[services.claude]
+label = "Claude Code (an org subscription, from `claude setup-token`)"
+item = "Claude Code"
+[[services.claude.vars]]
+name = "CLAUDE_CODE_OAUTH_TOKEN"
+field = "oauth-token"

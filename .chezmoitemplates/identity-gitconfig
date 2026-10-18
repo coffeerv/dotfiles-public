@@ -1,0 +1,19 @@
+{{- $r := .root -}}{{- $id := .id -}}{{- $i := index $r.identities $id -}}{{- $key := (index $i.hosts 0).key -}}
+# {{ $i.label }}. Generated from .chezmoidata/user.toml.
+[user]
+    email = {{ $i.email }}
+{{- if $key }}
+    # Public key only; the private half stays in your password manager's SSH agent.
+    signingkey = key::{{ $key }}
+[core]
+    # The .pub only tells the agent WHICH key to offer, so several accounts on one host don't collide.
+    sshCommand = {{ template "ssh-cmd" $r }} -i {{ template "pubdir" $r }}/id_{{ $id }}.pub -o IdentitiesOnly=yes
+[gpg]
+    format = ssh
+[commit]
+    gpgsign = true
+{{- end }}
+{{- range $h := $i.hosts }}{{ if and (hasKey $h "rewrite_https") $h.rewrite_https }}
+[url "git@{{ $h.host }}:{{ $h.owner }}/"]
+    insteadOf = https://{{ $h.host }}/{{ $h.owner }}/
+{{- end }}{{ end }}

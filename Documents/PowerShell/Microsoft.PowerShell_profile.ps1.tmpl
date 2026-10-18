@@ -1,0 +1,38 @@
+# Minimal on purpose: only what the multi-identity setup needs (PowerShell 7+).
+
+# mise: per-folder tools and settings. fnox: per-folder secrets. Both switch as you cd.
+(& mise activate pwsh) | Out-String | Invoke-Expression
+(& fnox activate pwsh) | Out-String | Invoke-Expression
+
+function secrets_unlock {
+{{- if eq .password_manager "bitwarden" }}
+    if (-not $env:BW_SESSION) { $env:BW_SESSION = (& bw unlock --raw) }
+    return [bool]$env:BW_SESSION
+{{- else }}
+    & op vault list *> $null
+    if ($LASTEXITCODE -ne 0) { Write-Error "1Password: not authorized (is the app locked?)"; return $false }
+    return $true
+{{- end }}
+}
+
+# Copy each identity's secrets from the password manager into its local encrypted cache (fnox.local.toml).
+# After rotating something: `secrets-sync <id>` (or no argument for all).
+$SecretsDirs = [ordered]@{
+{{- range $id, $i := .identities }}
+    "{{ $id }}" = Join-Path $HOME "{{ $.root }}/{{ $id }}"
+{{- end }}
+}
+function secrets-sync {
+    if (-not (secrets_unlock)) { return }
+    $names = if ($args.Count) { $args } else { $SecretsDirs.Keys }
+    foreach ($name in $names) {
+        $dir = $SecretsDirs[$name]
+        if (-not $dir -or -not (Test-Path (Join-Path $dir "fnox.toml"))) { Write-Warning "secrets-sync: unknown name or no fnox.toml: $name"; continue }
+        Push-Location $dir
+        try { & fnox sync -p cache --local-file --force; if ($LASTEXITCODE -eq 0) { "${name}: synced" } } finally { Pop-Location }
+    }
+}
+
+# Your own profile additions go here; this setup never touches it.
+$local = Join-Path $HOME "profile.local.ps1"
+if (Test-Path $local) { . $local }

@@ -1,9 +1,22 @@
-{{- if eq .chezmoi.os "darwin" -}}
+# Your own hosts go in ~/.ssh/config.local; this setup never touches it.
+Include ~/.ssh/config.local
+{{ $h := .chezmoi.homeDir }}
+{{- if or (eq .chezmoi.os "windows") .wsl }}
+# {{ .chezmoi.os }}{{ if .wsl }} (WSL){{ end }}: the {{ .password_manager }} agent is reached through Windows' ssh.exe; no IdentityAgent needed.
+{{- if eq .password_manager "bitwarden" }}
+# Bitwarden takes over the OpenSSH agent pipe: disable the "OpenSSH Authentication Agent" Windows service.
+{{- end }}
+{{- else if eq .password_manager "bitwarden" }}
+{{- $sock := joinPath $h ".bitwarden-ssh-agent.sock" -}}
+{{- if stat (joinPath $h "Library/Containers/com.bitwarden.desktop") }}{{ $sock = joinPath $h "Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock" }}{{ end -}}
+{{- if stat (joinPath $h "snap/bitwarden") }}{{ $sock = joinPath $h "snap/bitwarden/current/.bitwarden-ssh-agent.sock" }}{{ end -}}
+{{- if stat (joinPath $h ".var/app/com.bitwarden.desktop") }}{{ $sock = joinPath $h ".var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock" }}{{ end }}
+Host *
+	IdentityAgent "{{ $sock }}"
+{{- else if eq .chezmoi.os "darwin" }}
 Host *
 	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-{{- else if and (eq .chezmoi.os "linux") (not .wsl) -}}
+{{- else }}
 Host *
 	IdentityAgent ~/.1password/agent.sock
-{{- else -}}
-# {{ .chezmoi.os }}{{ if .wsl }} (WSL){{ end }}: the 1Password agent is reached through Windows' ssh.exe; no IdentityAgent needed.
 {{- end }}

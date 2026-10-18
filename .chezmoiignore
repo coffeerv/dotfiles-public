@@ -1,10 +1,20 @@
 README.md
 README.es.md
 LICENSE
+mise.toml
+setup
+examples
+tests
 {{- if eq .chezmoi.os "windows" }}
+10-fnox-age-key.sh
 .zshrc
 .config/1Password
-code/org1/bin/oauth-access-token
 {{- else }}
+10-fnox-age-key.ps1
 AppData
+Documents
+{{- end }}
+{{- if eq .password_manager "bitwarden" }}
+.config/1Password
+AppData/Local/1Password
 {{- end }}

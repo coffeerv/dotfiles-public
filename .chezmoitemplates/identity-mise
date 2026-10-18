@@ -1,0 +1,12 @@
+{{- $r := .root -}}{{- $id := .id -}}{{- $i := index $r.identities $id -}}
+{{- $env := dict "GH_CONFIG_DIR" (printf "%s/.config/gh-%s" ($r.chezmoi.homeDir | replace "\\" "/") $i.gh_account) -}}
+{{- range $s := $i.services }}{{ $svc := index $r.services $s }}{{ if hasKey $svc "env" }}{{ $env = merge $env $svc.env }}{{ end }}{{ end -}}
+{{- if hasKey $i "env" }}{{ $env = merge (deepCopy $i.env) $env }}{{ end -}}
+# Non-secret settings for everything under this folder ({{ $i.label }}). Secrets live in fnox.toml.
+# Generated from .chezmoidata/user.toml; put your own additions in mise.local.toml (not managed).
+[env]
+{{ $env | toToml | trim }}
+{{- if and (hasKey $i "tools") $i.tools }}
+[tools]
+{{ $i.tools | toToml | trim }}
+{{- end }}

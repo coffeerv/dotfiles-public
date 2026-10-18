@@ -1,4 +1,4 @@
-# Paths and binaries that change per OS (op-ssh-sign, ssh, gh).
+# Generated from .chezmoidata/user.toml. OS-specific paths (signing program, ssh, gh) live in ~/.gitconfig.os.
 [include]
     path = ~/.gitconfig.os
 
@@ -13,42 +13,31 @@
     allowedSignersFile = ~/.ssh/allowed_signers
 
 # Each identity is selected twice:
-#   - by directory, for fresh repos that have no remote yet, and
+#   - by folder, for fresh repos that have no remote yet, and
 #   - by remote URL (git >= 2.36), so it also applies to worktrees, /tmp clones, etc.
-# Later matches override earlier ones.
+# Later matches override earlier ones, which is how a host with its own key layers on top.
+{{- range $id, $i := .identities }}
 
-# --- org1 (GitHub) -----------------------------------------------------------
-[includeIf "{{ template "gitdir" . }}:~/code/org1/"]
-    path = ~/.gitconfig-org1
-[includeIf "hasconfig:remote.*.url:git@github.com:org1/**"]
-    path = ~/.gitconfig-org1
-[includeIf "hasconfig:remote.*.url:https://*github.com/org1/**"]
-    path = ~/.gitconfig-org1
+# --- {{ $i.label }} ---
+[includeIf "{{ template "gitdir" $ }}:~/{{ $.root }}/{{ $id }}/"]
+    path = ~/.gitconfig-{{ $id }}
+{{- range $n, $h := $i.hosts }}{{ $slug := splitList "." $h.host | first }}
+{{- $own := and (gt $n 0) (hasKey $h "key") $h.key (ne $h.key (index $i.hosts 0).key) }}
+{{- if $own }}
+[includeIf "{{ template "gitdir" $ }}:~/{{ $.root }}/{{ $id }}/{{ $slug }}/"]
+    path = ~/.gitconfig-{{ $id }}-{{ $slug }}
+{{- end }}
+{{- range $p := list (printf "git@%s:%s/**" $h.host $h.owner) (printf "https://*%s/%s/**" $h.host $h.owner) }}
+[includeIf "hasconfig:remote.*.url:{{ $p }}"]
+    path = ~/.gitconfig-{{ $id }}
+{{- if $own }}
+[includeIf "hasconfig:remote.*.url:{{ $p }}"]
+    path = ~/.gitconfig-{{ $id }}-{{ $slug }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
 
-# --- org1 (Bitbucket): base identity + Bitbucket override, in that order ----
-[includeIf "{{ template "gitdir" . }}:~/code/org1/bitbucket/"]
-    path = ~/.gitconfig-org1-bb
-[includeIf "hasconfig:remote.*.url:git@bitbucket.org:org1/**"]
-    path = ~/.gitconfig-org1
-[includeIf "hasconfig:remote.*.url:git@bitbucket.org:org1/**"]
-    path = ~/.gitconfig-org1-bb
-[includeIf "hasconfig:remote.*.url:https://*bitbucket.org/org1/**"]
-    path = ~/.gitconfig-org1
-[includeIf "hasconfig:remote.*.url:https://*bitbucket.org/org1/**"]
-    path = ~/.gitconfig-org1-bb
-
-# --- org2 --------------------------------------------------------------------
-[includeIf "{{ template "gitdir" . }}:~/code/org2/"]
-    path = ~/.gitconfig-org2
-[includeIf "hasconfig:remote.*.url:git@github.com:org2/**"]
-    path = ~/.gitconfig-org2
-[includeIf "hasconfig:remote.*.url:https://*github.com/org2/**"]
-    path = ~/.gitconfig-org2
-
-# --- personal ----------------------------------------------------------------
-[includeIf "{{ template "gitdir" . }}:~/code/personal/"]
-    path = ~/.gitconfig-personal
-[includeIf "hasconfig:remote.*.url:git@github.com:your-user/**"]
-    path = ~/.gitconfig-personal
-[includeIf "hasconfig:remote.*.url:https://*github.com/your-user/**"]
-    path = ~/.gitconfig-personal
+# Your own git settings (aliases, editor, …); this setup never touches it. Loaded last, so it wins.
+[include]
+    path = ~/.gitconfig.local

@@ -1,0 +1,13 @@
+{{- $r := .root -}}{{- $id := .id -}}{{- $i := index $r.identities $id -}}
+# Secrets for {{ $i.label }}: references to your password manager only, no values.
+# Generated from .chezmoidata/user.toml. Loaded automatically inside this folder by `fnox activate`.
+# Read one: fnox get NAME · after rotating something: secrets-sync {{ $id }}
+[secrets]
+{{- range $s := $i.services }}{{ $svc := index $r.services $s }}
+{{- range $v := $svc.vars }}
+{{ $v.name }} = { {{ template "secret-ref" (dict "root" $r "ident" $i "item" $svc.item "field" $v.field) }} }
+{{- end }}
+{{- end }}
+{{- if hasKey $i "secrets" }}{{ range $name, $sec := $i.secrets }}
+{{ $name }} = { {{ template "secret-ref" (dict "root" $r "ident" $i "item" $sec.item "field" $sec.field) }}{{ if and (hasKey $sec "env") (not $sec.env) }}, env = false{{ end }} }
+{{- end }}{{ end }}

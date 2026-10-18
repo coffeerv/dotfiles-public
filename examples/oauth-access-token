@@ -1,4 +1,12 @@
 #!/bin/bash
+# EXAMPLE, not installed by default. Copy it to ~/<root>/<id>/bin/, then in that folder's
+# mise.local.toml:
+#   [env]
+#   OAUTH_TOKEN_URL    = "https://auth.example.com/oauth/token"
+#   OAUTH_ACCESS_TOKEN = "{{ exec(command=config_root ~ '/bin/oauth-access-token') }}"
+# and add OAUTH_CLIENT_ID / OAUTH_CLIENT_SECRET / OAUTH_REFRESH_TOKEN (env = false) to the identity's
+# secrets in .chezmoidata/user.toml.
+#
 # Prints a valid OAuth access token (they live ~1 h) and refreshes it only when needed.
 # Meant for mise.toml: the fast path reads a cache file + its expiry, no network.
 # Client credentials and refresh token come from fnox (no prompts).

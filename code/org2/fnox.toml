@@ -1,8 +1,0 @@
-# org2 secrets. References to the password manager only: no values here.
-# Read: fnox get NAME · refresh the local cache after rotating: secrets-sync org2
-[secrets]
-LINEAR_API_KEY        = { provider = "op", value = "op://Org2/Linear/api-key" }
-SENTRY_AUTH_TOKEN     = { provider = "op", value = "op://Org2/Sentry/auth-token" }
-STRIPE_RESTRICTED_KEY = { provider = "op", value = "op://Org2/Stripe/restricted-key-test" }
-# EAS CLI for org2's Expo account; takes precedence over `eas login`.
-EXPO_TOKEN            = { provider = "op", value = "op://Org2/Expo/token" }

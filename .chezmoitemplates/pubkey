@@ -1,0 +1,2 @@
+{{- $i := index .root.identities .id -}}
+{{- range $n, $h := $i.hosts }}{{ if or (and (eq $n 0) (not $.slug)) (eq (splitList "." $h.host | first) $.slug) }}{{ $h.key }}{{ end }}{{ end }}

@@ -1,0 +1,12 @@
+{{- $r := .root -}}{{- $i := index $r.identities .id -}}{{- $slug := .slug -}}
+{{- range $h := $i.hosts }}{{ if eq (splitList "." $h.host | first) $slug -}}
+# {{ $i.label }} on {{ $h.host }}: same email, its own key. Layered on top of ~/.gitconfig-{{ $.id }}.
+[user]
+    signingkey = key::{{ $h.key }}
+[core]
+    sshCommand = {{ template "ssh-cmd" $r }} -i {{ template "pubdir" $r }}/id_{{ $.id }}_{{ $slug }}.pub -o IdentitiesOnly=yes
+[gpg]
+    format = ssh
+[commit]
+    gpgsign = true
+{{- end }}{{ end }}

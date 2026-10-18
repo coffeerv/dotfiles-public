@@ -1,0 +1,70 @@
+# Your setup. Written by the wizard (`mise run setup`); safe to edit by hand, then run
+# `mise run setup -- --sync` to regenerate the per-identity files. Public data only:
+# names, emails and PUBLIC keys. Private keys and tokens stay in your password manager.
+
+name = "Your Name"
+root = "code"                   # identity folders live in ~/code/<id>
+password_manager = "1password"  # "1password" or "bitwarden"
+
+# --- personal ----------------------------------------------------------------
+[identities.personal]
+label = "Personal"
+email = "you@personal.example"
+vault = "Personal"              # 1Password vault (Bitwarden: item-name prefix)
+gh_account = "personal"         # identities with the same value share one `gh` login
+services = []
+
+[[identities.personal.hosts]]
+host = "github.com"
+owner = "your-user"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_PERSONAL_PUBLIC_KEY"
+
+# --- org1: GitHub + Bitbucket, a separate key per host -----------------------
+[identities.org1]
+label = "Org1"
+email = "you@org1.example"
+vault = "Org1"
+gh_account = "org1"
+services = ["jira", "bitbucket", "datadog", "claude"]
+
+[[identities.org1.hosts]]
+host = "github.com"
+owner = "org1"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG1_GITHUB_PUBLIC_KEY"
+
+[[identities.org1.hosts]]
+host = "bitbucket.org"
+owner = "org1"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG1_BITBUCKET_PUBLIC_KEY"
+rewrite_https = true            # clone URLs copied as https:// go over SSH with the key above
+
+[identities.org1.env]
+AWS_PROFILE = "org1"
+
+[identities.org1.tools]
+ruby = "3.3"
+
+# Extra secrets beyond the catalog. env = false: only via `fnox get`, never exported.
+[identities.org1.secrets.ORG1_RO_DB_PASSWORD]
+item = "Read-only DB"
+field = "password"
+env = false
+
+# --- org2: worked on from your personal GitHub account -----------------------
+[identities.org2]
+label = "Org2"
+email = "you@org2.example"
+vault = "Org2"
+gh_account = "personal"
+services = ["linear", "sentry", "stripe", "expo"]
+
+[[identities.org2.hosts]]
+host = "github.com"
+owner = "org2"
+key = "ssh-ed25519 AAAAREPLACE_WITH_YOUR_ORG2_PUBLIC_KEY"
+
+[identities.org2.env]
+CLOUDSDK_CORE_PROJECT = "org2-project"  # gcloud without --project hits this, not your global default
+
+[identities.org2.tools]
+"npm:eas-cli" = "latest"
