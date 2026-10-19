@@ -1,0 +1,311 @@
+1
+00:00:01,000 --> 00:00:05,640
+Una computadora, varias cuentas de GitHub y la identidad
+correcta
+
+2
+00:00:05,640 --> 00:00:10,080
+en cada proyecto. Este setup organiza tu nombre, correo,
+llave
+
+3
+00:00:10,080 --> 00:00:14,660
+SSH, sesión de GitHub y configuración por carpeta. Vamos
+a
+
+4
+00:00:14,660 --> 00:00:18,000
+instalarlo desde cero con una cuenta personal y dos
+organizaciones
+
+5
+00:00:18,000 --> 00:00:22,460
+ficticias. Toda la demostración ocurre en un contenedor
+Linux desechable:
+
+6
+00:00:22,680 --> 00:00:25,520
+los cambios se aplican a su usuario de prueba. El
+
+7
+00:00:25,520 --> 00:00:28,940
+asistente está en inglés y recorreremos juntos las
+decisiones importantes.
+
+8
+00:00:34,040 --> 00:00:38,060
+Para una instalación propia, primero crea tu copia del
+repositorio
+
+9
+00:00:38,060 --> 00:00:42,960
+e instala mise. Después, chezmoi descarga esa copia.
+Desde su
+
+10
+00:00:42,960 --> 00:00:47,760
+carpeta, confía en la configuración y ejecuta mise run
+setup.
+
+11
+00:00:48,000 --> 00:00:51,740
+Aquí ya preparamos las herramientas para concentrarnos
+en el asistente.
+
+12
+00:00:52,020 --> 00:00:56,020
+El modo principiante cubre lo esencial. El modo avanzado
+también
+
+13
+00:00:56,020 --> 00:01:00,260
+permite elegir la carpeta raíz, otros servidores de Git,
+variables
+
+14
+00:01:00,260 --> 00:01:04,040
+de entorno y versiones de herramientas. Usaremos ese
+modo para
+
+15
+00:01:04,040 --> 00:01:06,480
+mostrar una configuración laboral más completa.
+
+16
+00:01:09,960 --> 00:01:13,780
+Seleccionamos el gestor de contraseñas y escribimos el
+nombre que
+
+17
+00:01:13,780 --> 00:01:17,040
+aparecerá en los commits. La primera identidad es la
+personal:
+
+18
+00:01:17,440 --> 00:01:21,380
+indicamos el usuario de GitHub y el correo
+correspondiente. Cuando
+
+19
+00:01:21,380 --> 00:01:24,800
+puede consultar una cuenta válida, el asistente también
+ofrece su
+
+20
+00:01:24,800 --> 00:01:28,760
+dirección privada de GitHub. En esta demo usamos datos
+ficticios
+
+21
+00:01:28,760 --> 00:01:32,300
+y un correo de ejemplo. Conservamos la carpeta code y
+
+22
+00:01:32,300 --> 00:01:36,720
+dejamos la identidad personal sin servicios adicionales.
+Cada configuración se
+
+23
+00:01:36,720 --> 00:01:39,360
+puede revisar después volviendo a ejecutar el asistente.
+
+24
+00:01:43,040 --> 00:01:47,720
+Ahora agregamos Acme. Sus proyectos vivirán en code,
+acme, con
+
+25
+00:01:47,720 --> 00:01:51,320
+el correo de trabajo. Elegimos una cuenta de GitHub
+separada,
+
+26
+00:01:51,320 --> 00:01:54,160
+para que tenga su propia sesión de la herramienta gh.
+
+27
+00:01:54,800 --> 00:01:58,620
+Podemos definir un perfil de AWS y fijar una versión
+
+28
+00:01:58,620 --> 00:02:03,140
+de Node para esta organización. También seleccionamos un
+servicio, como
+
+29
+00:02:03,140 --> 00:02:07,060
+Linear: el setup guarda la referencia al gestor de
+contraseñas,
+
+30
+00:02:07,300 --> 00:02:11,560
+no el valor del token. La segunda organización, Studio,
+usará
+
+31
+00:02:11,560 --> 00:02:14,840
+la cuenta personal de GitHub. Compartir el inicio de
+sesión
+
+32
+00:02:14,840 --> 00:02:18,680
+no impide mantener un correo de commits diferente por
+organización.
+
+33
+00:02:21,960 --> 00:02:26,200
+El siguiente paso son las llaves SSH. En una instalación
+
+34
+00:02:26,200 --> 00:02:29,640
+real, puedes crear una llave en 1Password o pegar la
+
+35
+00:02:29,640 --> 00:02:33,660
+parte pública de una llave existente. Aquí pegaremos
+llaves públicas
+
+36
+00:02:33,660 --> 00:02:37,980
+de demostración. Registrar estas llaves en la
+configuración no equivale
+
+37
+00:02:37,980 --> 00:02:41,620
+a iniciar sesión: para autenticarte y firmar, tu gestor
+debe
+
+38
+00:02:41,620 --> 00:02:45,940
+tener las llaves privadas correspondientes y su agente
+SSH debe
+
+39
+00:02:45,940 --> 00:02:49,640
+estar activo. No conectamos cuentas ni gestores reales
+en esta
+
+40
+00:02:49,640 --> 00:02:50,080
+grabación.
+
+41
+00:02:53,440 --> 00:02:58,920
+Antes de aplicar, revisamos el resumen: carpetas,
+correos, hosts, sesiones
+
+42
+00:02:58,920 --> 00:03:02,820
+de GitHub y servicios. Al confirmar, el asistente guarda
+las
+
+43
+00:03:02,820 --> 00:03:06,700
+respuestas y genera los archivos de cada identidad.
+Después muestra
+
+44
+00:03:06,700 --> 00:03:10,460
+los cambios que chezmoi aplicará al directorio personal.
+Los archivos
+
+45
+00:03:10,460 --> 00:03:14,780
+existentes que se reemplacen reciben una copia de
+respaldo. Confirmamos
+
+46
+00:03:14,780 --> 00:03:19,060
+la aplicación dentro del contenedor. Las preferencias
+propias se pueden
+
+47
+00:03:19,060 --> 00:03:24,480
+conservar en archivos locales, como punto zshrc punto
+local y
+
+48
+00:03:24,480 --> 00:03:26,380
+punto gitconfig punto local.
+
+49
+00:03:29,680 --> 00:03:34,100
+Comprobamos el resultado en repositorios de prueba.
+Dentro del proyecto
+
+50
+00:03:34,100 --> 00:03:38,800
+personal, Git devuelve el correo personal. Dentro de
+Acme, devuelve
+
+51
+00:03:38,800 --> 00:03:42,820
+el correo laboral y la selección de llave
+correspondiente. Studio
+
+52
+00:03:42,820 --> 00:03:46,260
+conserva su propio correo, aunque comparte la sesión de
+GitHub
+
+53
+00:03:46,260 --> 00:03:51,100
+personal. Las configuraciones de mise muestran esa
+separación y las
+
+54
+00:03:51,100 --> 00:03:56,460
+variables por organización. Fuera de las identidades
+configuradas, Git tiene
+
+55
+00:03:56,460 --> 00:04:00,820
+activada la opción de exigir una identidad explícita.
+Así evitamos
+
+56
+00:04:00,820 --> 00:04:03,040
+que adivine un correo para nuestros commits.
+
+57
+00:04:06,520 --> 00:04:09,740
+Para terminar una instalación real, sigue la lista de
+próximos
+
+58
+00:04:09,740 --> 00:04:13,860
+pasos. Agrega cada llave pública a GitHub para
+autenticación y
+
+59
+00:04:13,860 --> 00:04:17,760
+firma, inicia sesión en gh con el directorio indicado, y
+
+60
+00:04:17,760 --> 00:04:22,400
+guarda los tokens en tu gestor. Después ejecuta secrets-
+sync para
+
+61
+00:04:22,400 --> 00:04:26,360
+llenar la caché local cifrada. No probamos pushes,
+firmas ni
+
+62
+00:04:26,360 --> 00:04:29,720
+descarga de secretos en esta demo. Puedes volver a
+ejecutar
+
+63
+00:04:29,720 --> 00:04:33,360
+el wizard para agregar cuentas o cambiar ajustes, y
+reutilizar
+
+64
+00:04:33,360 --> 00:04:36,560
+tus respuestas en otra computadora. La narración de este
+tutorial
+
+65
+00:04:36,560 --> 00:04:38,280
+fue generada con inteligencia artificial.

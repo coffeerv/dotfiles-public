@@ -28,6 +28,14 @@ Only *references* to them are written to disk, so nothing secret ends up in this
 - **Signed commits** ("Verified" on GitHub) with keys that never leave your password manager.
 - A **setup wizard** that asks a few questions and does the rest, on macOS, Linux, WSL and Windows (PowerShell).
 
+## Watch the setup wizard
+
+[![Multi-identity setup walkthrough](docs/screencast/thumbnail.jpg)](https://github.com/coffeerv/dotfiles-public/releases/tag/tutorial-2026-10-19)
+
+[Download the tutorial — Spanish, English, or both audio tracks](https://github.com/coffeerv/dotfiles-public/releases/tag/tutorial-2026-10-19) (4:43, 1080p).
+Recorded in an isolated Linux container with fictional identities and AI-generated narration.
+[Scripts, subtitles, and production instructions](docs/screencast/README.md).
+
 ## Quick start
 
 About 10 minutes. It changes `~/.gitconfig`, `~/.ssh/config` and your shell profile (`~/.zshrc`, or your

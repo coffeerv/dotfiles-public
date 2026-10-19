@@ -5,6 +5,7 @@ mise.toml
 setup
 examples
 tests
+docs
 {{- if eq .chezmoi.os "windows" }}
 10-fnox-age-key.sh
 .zshrc

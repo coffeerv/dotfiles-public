@@ -3,3 +3,7 @@ fnox.local.toml
 age.txt
 .gh/
 *.bak-*
+
+# Screencast production outputs stay out of Git.
+docs/screencast/build/
+__pycache__/

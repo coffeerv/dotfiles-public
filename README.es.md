@@ -30,6 +30,14 @@ En disco solo se escriben *referencias* a ellos, así que nada secreto termina e
 - **Commits firmados** ("Verified" en GitHub) con llaves que nunca salen de tu gestor de contraseñas.
 - Un **asistente de configuración** (wizard) que hace unas cuantas preguntas y se encarga del resto, en macOS, Linux, WSL y Windows (PowerShell).
 
+## Mira el wizard en acción
+
+[![Recorrido del wizard multi-identidad](docs/screencast/thumbnail.jpg)](https://github.com/coffeerv/dotfiles-public/releases/tag/tutorial-2026-10-19)
+
+[Descarga el tutorial — español, inglés o ambas pistas de audio](https://github.com/coffeerv/dotfiles-public/releases/tag/tutorial-2026-10-19) (4:43, 1080p).
+Grabado en un contenedor Linux aislado, con identidades ficticias y narración generada con IA.
+[Guiones, subtítulos e instrucciones de producción](docs/screencast/README.md).
+
 ## Inicio rápido
 
 Unos 10 minutos. Cambia `~/.gitconfig`, `~/.ssh/config` y el perfil de tu terminal (`~/.zshrc`, o tu perfil de

@@ -1,0 +1,23 @@
+01-intro
+One computer, several GitHub accounts, and the right identity for every project. This setup organizes your name, email, SSH key, GitHub session, and configuration by folder. We will install it from scratch with a personal identity and two fictional organizations. The entire demonstration runs inside a disposable Linux container, so changes apply to its test user. We will walk through the wizard and explain the important choices.
+
+02-start
+For your own installation, first create a copy of the repository and install mise. Then use chezmoi to download your copy. From its source folder, trust the configuration and run mise run setup. We have already prepared the tools so we can focus on the wizard. Beginner mode covers the essentials. Advanced mode also lets you choose the project root, other Git hosts, environment variables, and tool versions. We will use that mode to demonstrate a more complete work configuration.
+
+03-personal
+We choose a password manager and enter the name that will appear on commits. The first identity is personal: we provide its GitHub username and email address. When the wizard can look up a valid account, it also offers that account's private GitHub email. This demo uses fictional details and an example email address. We keep code as the project root and leave the personal identity without extra services. These settings can be reviewed later by running the wizard again.
+
+04-organizations
+Next, we add Acme. Its projects will live under code, acme, using the work email address. We choose a separate GitHub account so it gets its own gh command-line session. We can define an AWS profile and pin a Node version for this organization. We also select a service such as Linear. The setup stores a reference to the password manager, not the token value. Our second organization, Studio, will use the personal GitHub account. Sharing a login still allows each organization to have a different commit email.
+
+05-keys
+The next step is SSH keys. In a real installation, you can create a key in 1Password or paste the public part of an existing key. Here we paste demonstration public keys. Adding these keys to the configuration does not sign you in. Authentication and signing require the matching private keys in your password manager and an active SSH agent. This recording does not connect to real accounts or password vaults.
+
+06-apply
+Before applying anything, we review the summary: folders, emails, hosts, GitHub sessions, and services. After confirmation, the wizard saves the answers and generates each identity's files. It then shows the changes chezmoi will apply to the home directory. Existing files that will be replaced receive backup copies. We confirm the installation inside the container. Your own preferences can live in local files, such as dot zshrc dot local and dot gitconfig dot local.
+
+07-verify
+Let's check the result in test repositories. Inside the personal project, Git returns the personal email. Inside Acme, it returns the work email and the corresponding SSH key selection. Studio keeps its own email even though it shares the personal GitHub session. The mise configuration shows that separation and the organization-specific variables. Outside the configured identities, Git is set to require an explicit identity. This prevents it from guessing an email address for our commits.
+
+08-next
+To finish a real installation, follow the next-steps checklist. Add each public key to GitHub for authentication and signing, sign in to gh using the specified configuration directory, and store your tokens in your password manager. Then run secrets-sync to populate the encrypted local cache. This demo does not test pushes, signatures, or secret retrieval. You can run the wizard again to add accounts or change settings, and reuse your answers on another computer. This tutorial's narration was generated with artificial intelligence.

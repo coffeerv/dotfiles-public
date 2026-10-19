@@ -1,0 +1,23 @@
+01-intro
+Una computadora, varias cuentas de GitHub y la identidad correcta en cada proyecto. Este setup organiza tu nombre, correo, llave SSH, sesión de GitHub y configuración por carpeta. Vamos a instalarlo desde cero con una cuenta personal y dos organizaciones ficticias. Toda la demostración ocurre en un contenedor Linux desechable: los cambios se aplican a su usuario de prueba. El asistente está en inglés y recorreremos juntos las decisiones importantes.
+
+02-start
+Para una instalación propia, primero crea tu copia del repositorio e instala mise. Después, chezmoi descarga esa copia. Desde su carpeta, confía en la configuración y ejecuta mise run setup. Aquí ya preparamos las herramientas para concentrarnos en el asistente. El modo principiante cubre lo esencial. El modo avanzado también permite elegir la carpeta raíz, otros servidores de Git, variables de entorno y versiones de herramientas. Usaremos ese modo para mostrar una configuración laboral más completa.
+
+03-personal
+Seleccionamos el gestor de contraseñas y escribimos el nombre que aparecerá en los commits. La primera identidad es la personal: indicamos el usuario de GitHub y el correo correspondiente. Cuando puede consultar una cuenta válida, el asistente también ofrece su dirección privada de GitHub. En esta demo usamos datos ficticios y un correo de ejemplo. Conservamos la carpeta code y dejamos la identidad personal sin servicios adicionales. Cada configuración se puede revisar después volviendo a ejecutar el asistente.
+
+04-organizations
+Ahora agregamos Acme. Sus proyectos vivirán en code, acme, con el correo de trabajo. Elegimos una cuenta de GitHub separada, para que tenga su propia sesión de la herramienta gh. Podemos definir un perfil de AWS y fijar una versión de Node para esta organización. También seleccionamos un servicio, como Linear: el setup guarda la referencia al gestor de contraseñas, no el valor del token. La segunda organización, Studio, usará la cuenta personal de GitHub. Compartir el inicio de sesión no impide mantener un correo de commits diferente por organización.
+
+05-keys
+El siguiente paso son las llaves SSH. En una instalación real, puedes crear una llave en 1Password o pegar la parte pública de una llave existente. Aquí pegaremos llaves públicas de demostración. Registrar estas llaves en la configuración no equivale a iniciar sesión: para autenticarte y firmar, tu gestor debe tener las llaves privadas correspondientes y su agente SSH debe estar activo. No conectamos cuentas ni gestores reales en esta grabación.
+
+06-apply
+Antes de aplicar, revisamos el resumen: carpetas, correos, hosts, sesiones de GitHub y servicios. Al confirmar, el asistente guarda las respuestas y genera los archivos de cada identidad. Después muestra los cambios que chezmoi aplicará al directorio personal. Los archivos existentes que se reemplacen reciben una copia de respaldo. Confirmamos la aplicación dentro del contenedor. Las preferencias propias se pueden conservar en archivos locales, como punto zshrc punto local y punto gitconfig punto local.
+
+07-verify
+Comprobamos el resultado en repositorios de prueba. Dentro del proyecto personal, Git devuelve el correo personal. Dentro de Acme, devuelve el correo laboral y la selección de llave correspondiente. Studio conserva su propio correo, aunque comparte la sesión de GitHub personal. Las configuraciones de mise muestran esa separación y las variables por organización. Fuera de las identidades configuradas, Git tiene activada la opción de exigir una identidad explícita. Así evitamos que adivine un correo para nuestros commits.
+
+08-next
+Para terminar una instalación real, sigue la lista de próximos pasos. Agrega cada llave pública a GitHub para autenticación y firma, inicia sesión en gh con el directorio indicado, y guarda los tokens en tu gestor. Después ejecuta secrets-sync para llenar la caché local cifrada. No probamos pushes, firmas ni descarga de secretos en esta demo. Puedes volver a ejecutar el wizard para agregar cuentas o cambiar ajustes, y reutilizar tus respuestas en otra computadora. La narración de este tutorial fue generada con inteligencia artificial.
